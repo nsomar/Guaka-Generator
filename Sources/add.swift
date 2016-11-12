@@ -10,7 +10,7 @@ import Guaka
 import SwiftFile
 
 var addCommand = Command(
-  name: "add", parent: rootCommand, configuration: configuration, run: execute)
+  name: "add", configuration: configuration, run: execute)
 
 
 private func configuration(command: Command) {
@@ -35,7 +35,8 @@ private func execute(flags: [String: Flag], args: [String]) {
   let rootPath = "\(currentDir)/test"
   let sourcesPath = rootPath + "/Sources"
   
+  let parent = flags["parent"]?.value as? String
   _ = commandFile(varName: name, commandName: name).write(toFile: sourcesPath + "/\(name).swift")
-  let s = updateSetup(path: sourcesPath + "/setup.swift", command: "\(name)Command", parent: flags["parent"] as? String)
+  let s = updateSetup(path: sourcesPath + "/setup.swift", command: "\(name)Command", parent: parent)
   s.write(toFile: sourcesPath + "/setup.swift")
 }

@@ -9,7 +9,7 @@
 import Guaka
 
 var newCommand = Command(
-  name: "new", parent: rootCommand, configuration: configuration, run: execute)
+  name: "new", configuration: configuration, run: execute)
 
 
 private func configuration(command: Command) {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-let comamndAddingPlaceholder = "// Command adding placeholder, edit this line"
+let comamndAddingPlaceholder = "  // Command adding placeholder, edit this line"
 
 func setupFile() -> String {
   return [
@@ -63,7 +63,7 @@ func updateSetup(path: String, command: String, parent: String?) -> String {
   
   var line = ""
   if let parent = parent {
-    line = "  (parent)Command.add(subCommand: \(command))"
+    line = "  \(parent)Command.add(subCommand: \(command))"
   } else {
     line = "  rootCommand.add(subCommand: \(command))"
   }
@@ -73,5 +73,5 @@ func updateSetup(path: String, command: String, parent: String?) -> String {
   let part1 = s[s.startIndex..<x]
   let part2 = s[end..<s.endIndex]
   
-  return part1 + line + part2
+  return part1 + line + "\n\(comamndAddingPlaceholder)" + part2
 }
