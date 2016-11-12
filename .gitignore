@@ -191,7 +191,7 @@ tags
 
 iOSInjectionProject/
 
-ENV.xcodeproj
+guaka-cli.xcodeproj
 Packages/
 
 ### Objective-C Patch ###
