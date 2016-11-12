@@ -22,6 +22,6 @@
 //  // Other configurations
 //}
 //
-//private func execute(flags: [String: Flag], args: [String]) {
+//private func execute(flags: Flags, args: [String]) {
 //  // Execute code here
 //}

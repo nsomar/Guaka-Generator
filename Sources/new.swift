@@ -17,7 +17,7 @@ private func configuration(command: Command) {
   command.example = "guaka new my-command"
 }
 
-private func execute(flags: [String: Flag], args: [String]) {
+private func execute(flags: Flags, args: [String]) {
   if args.count != 1 {
     print(newCommand.helpMessage)
     return

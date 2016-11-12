@@ -23,7 +23,7 @@ private func configuration(command: Command) {
   // Other configurations
 }
 
-private func execute(flags: [String: Flag], args: [String]) {
+private func execute(flags: Flags, args: [String]) {
   if args.count != 1 {
     print(newCommand.helpMessage)
     return
@@ -35,7 +35,7 @@ private func execute(flags: [String: Flag], args: [String]) {
   let rootPath = "\(currentDir)/test"
   let sourcesPath = rootPath + "/Sources"
   
-  let parent = flags["parent"]?.value as? String
+  let parent = flags.get(name: "parent", type: String.self)
   _ = commandFile(varName: name, commandName: name).write(toFile: sourcesPath + "/\(name).swift")
   let s = updateSetup(path: sourcesPath + "/setup.swift", command: "\(name)Command", parent: parent)
   s.write(toFile: sourcesPath + "/setup.swift")
