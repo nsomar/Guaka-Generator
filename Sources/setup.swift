@@ -10,7 +10,6 @@ import Guaka
 
 // Generated, dont update
 func setupCommands() {
-  initCommand.parent = rootCommand
-  addCommand.parent = rootCommand
-  generatedCommand.parent = rootCommand
+  rootCommand.add(subCommand: newCommand)
+  rootCommand.add(subCommand: addCommand)
 }

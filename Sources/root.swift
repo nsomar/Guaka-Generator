@@ -15,7 +15,7 @@ var rootCommand = Command(
 private func configuration(command: Command) {
   
   command.add(flags: [
-    Flag(longName: "version", value: false, inheritable: true),
+    Flag(longName: "version", value: false, inheritable: false),
     ]
   )
   

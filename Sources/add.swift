@@ -7,6 +7,7 @@
 //
 
 import Guaka
+import SwiftFile
 
 var addCommand = Command(
   name: "add", parent: rootCommand, configuration: configuration, run: execute)
@@ -15,7 +16,7 @@ var addCommand = Command(
 private func configuration(command: Command) {
   
   command.add(flags: [
-    // Add your flags here
+    Flag(longName: "parent", type: String.self, required: false),
     ]
   )
   
@@ -23,5 +24,18 @@ private func configuration(command: Command) {
 }
 
 private func execute(flags: [String: Flag], args: [String]) {
-  // Execute code here
+  if args.count != 1 {
+    print(newCommand.helpMessage)
+    return
+  }
+  
+  //FIXME: we should test that we are inside a guaka thing
+  let name = args.first!
+  let currentDir = "/Users/oabdelhafith/Desktop" //SwiftPath.currentDirectory
+  let rootPath = "\(currentDir)/test"
+  let sourcesPath = rootPath + "/Sources"
+  
+  _ = commandFile(varName: name, commandName: name).write(toFile: sourcesPath + "/\(name).swift")
+  let s = updateSetup(path: sourcesPath + "/setup.swift", command: "\(name)Command", parent: flags["parent"] as? String)
+  s.write(toFile: sourcesPath + "/setup.swift")
 }
