@@ -34,25 +34,98 @@ class GeneratorPartsTests: XCTestCase {
 
   func testUpdatesSetupWihtoutParentFile() {
     let file = GeneratorParts.setupFileContent()
-    let updated = GeneratorParts.updateSetupFile(withContent: file, byAddingCommand: "new", withParent: nil)
+    let updated = try! GeneratorParts.updateSetupFile(withContent: file, byAddingCommand: "new", withParent: nil)
     XCTAssertEqual(updated, "import Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  rootCommand.add(subCommand: new)\n  // Command adding placeholder, edit this line\n}")
   }
 
   func testUpdatesSetupWihtParentFile() {
     let file = GeneratorParts.setupFileContent()
-    let updated = GeneratorParts.updateSetupFile(withContent: file, byAddingCommand: "new", withParent: "root")
+    let updated = try! GeneratorParts.updateSetupFile(withContent: file, byAddingCommand: "new", withParent: "root")
     XCTAssertEqual(updated, "import Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  rootCommand.add(subCommand: new)\n  // Command adding placeholder, edit this line\n}")
+  }
+
+  func testItThrowsErrorIfCannotFindThePlaceholder() {
+    do {
+      _ = try GeneratorParts.updateSetupFile(withContent: "abcd", byAddingCommand: "new", withParent: "root")
+    } catch let e as GuakaError {
+      XCTAssertEqual(e.error, "Guaka setup.swift file has been altered.\nThe placeholder used to insert commands cannot be found   // Command adding placeholder, edit this line.\nYou can try to add it yourself by updating `setup.swift` to look like\n\nimport Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  // Command adding placeholder, edit this line\n}\n\nAdding command wont be possible.")
+    } catch {
+      XCTFail()
+    }
   }
 
   func testCanUpdateFileMultipleTimes() {
     let file = GeneratorParts.setupFileContent()
-    var updated = GeneratorParts.updateSetupFile(withContent: file, byAddingCommand: "new1", withParent: "root")
+    var updated = try! GeneratorParts.updateSetupFile(withContent: file, byAddingCommand: "new1", withParent: "root")
 
-    updated = GeneratorParts.updateSetupFile(withContent: updated, byAddingCommand: "new2")
+    updated = try! GeneratorParts.updateSetupFile(withContent: updated, byAddingCommand: "new2")
 
-    updated = GeneratorParts.updateSetupFile(withContent: updated, byAddingCommand: "new3")
+    updated = try! GeneratorParts.updateSetupFile(withContent: updated, byAddingCommand: "new3")
 
     XCTAssertEqual(updated, "import Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  rootCommand.add(subCommand: new1)\n  rootCommand.add(subCommand: new2)\n  rootCommand.add(subCommand: new3)\n  // Command adding placeholder, edit this line\n}")
+  }
+
+  func testItGetsNameIfCorrect() {
+    let name = try! GeneratorParts.commandName(forPassedArgs: ["name"])
+    XCTAssertEqual(name, "name")
+  }
+
+  func testItThrowsErrorIfArgsIsEmpty() {
+    do {
+      _ = try GeneratorParts.commandName(forPassedArgs: [])
+    } catch let e as GuakaError {
+      XCTAssertEqual(e.error, "New command name was not passed.\nMissing command name")
+    } catch {
+      XCTFail()
+    }
+  }
+
+  func testItThrowsErrorIfMoreThan1ArgsArePassed() {
+    do {
+      _ = try GeneratorParts.commandName(forPassedArgs: ["a", "b"])
+    } catch let e as GuakaError {
+      XCTAssertEqual(e.error, "Too many arguments passed to command.")
+    } catch {
+      XCTFail()
+    }
+  }
+
+  func testItThrowsErrorIfWrongNamePassed() {
+    do {
+      _ = try GeneratorParts.commandName(forPassedArgs: ["abc def"])
+    } catch let e as GuakaError {
+      XCTAssertEqual(e.error, "The command name passed `abc def` is incorrect.\nPlease use only letters, numbers, underscodes and dashes.\n\nValid examples:\n   guaka new test\n   guaka new MyCommand\n   guaka new my-command\n   guaka new my_command\n   guaka new myCommand")
+    } catch {
+      XCTFail()
+    }
+  }
+
+  func testItReturnsNilIfProjctNameIsEmpty() {
+    let name = try! GeneratorParts.projectName(forPassedArgs: [])
+    XCTAssertNil(name)
+  }
+
+  func testItReturnsNameIfProjectNameIsCorrect() {
+    let name = try! GeneratorParts.projectName(forPassedArgs: ["abc"])
+    XCTAssertEqual(name, "abc")
+  }
+
+  func testItThrowsErrorIfProjectNameContainsSpaces() {
+    do {
+      _ = try GeneratorParts.projectName(forPassedArgs: ["abc asdsa"])
+    } catch GuakaError.wrongCommandNameFormat {
+    } catch {
+      XCTFail()
+    }
+  }
+
+  func testItThrowsErrorIfProjectReceivedTooManyArgs() {
+    do {
+      _ = try GeneratorParts.projectName(forPassedArgs: ["abc", "asdsa"])
+    } catch GuakaError.tooManyArgsPassed {
+    } catch {
+      XCTFail()
+    }
   }
 }
 

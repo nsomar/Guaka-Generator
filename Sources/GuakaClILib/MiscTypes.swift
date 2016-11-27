@@ -18,6 +18,11 @@ public enum GuakaError: Error {
   case failedCreatingFolder(String)
   case cannotCreateFile(String)
   case cannotReadFile(String)
+  case setupFileAltered
+  case notAGuakaProject
+  case missingCommandName
+  case tooManyArgsPassed
+  case wrongCommandNameFormat(String)
 
   public var error: String {
     switch self {
@@ -31,6 +36,25 @@ public enum GuakaError: Error {
       return "Cannot generate \(name) file"
     case .cannotReadFile(let path):
       return "Cannot read contents of file \(path)"
+    case .setupFileAltered:
+      return "Guaka setup.swift file has been altered.\nThe placeholder used to insert commands cannot be found \(GeneratorParts.comamndAddingPlaceholder).\nYou can try to add it yourself by updating `setup.swift` to look like\n\n\(GeneratorParts.setupFileContent())\n\nAdding command wont be possible."
+    case .notAGuakaProject:
+      return "This command can only be executed in a Guaka project.\nThe following directory does not contain guaka files"
+    case .missingCommandName:
+      return "New command name was not passed.\nMissing command name"
+    case .wrongCommandNameFormat(let name):
+      return [ "The command name passed `\(name)` is incorrect.",
+               "Please use only letters, numbers, underscodes and dashes.",
+               "",
+               "Valid examples:",
+               "   guaka new test",
+               "   guaka new MyCommand",
+               "   guaka new my-command",
+               "   guaka new my_command",
+               "   guaka new myCommand"].joined(separator: "\n")
+    case .tooManyArgsPassed:
+      return "Too many arguments passed to command."
     }
+
   }
 }

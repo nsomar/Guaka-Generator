@@ -44,42 +44,13 @@ private func configuration(command: Command) {
 }
 
 private func execute(flags: Flags, args: [String]) {
-  guard args.count <= 1 else {
-    newCommand.fail(statusCode: 1, errorMessage: "Received more than 1 argument")
-  }
-
   do {
-    let paths = try DirectoryUtilities.paths(forName: args.first)
-    try DirectoryUtilities.createDirectoryStrucutre(forName: args.first)
+    let name = try GeneratorParts.commandName(forPassedArgs: args)
+    let paths = try DirectoryUtilities.paths(forName: name)
+    try DirectoryUtilities.createDirectoryStrucutre(forName: name)
 
-    if
-      let created = try? GeneratorParts.packageFile(forCommandName: paths.projectName)
-        .write(toFile: paths.packagesFile),
-      created == false {
-      newCommand.fail(statusCode: 1, errorMessage: "Cannot generate the package file")
-    }
-
-    if
-      let created = try? GeneratorParts.mainSwiftFileContent()
-        .write(toFile: paths.mainSwiftFile),
-      created == false {
-      newCommand.fail(statusCode: 1, errorMessage: "Cannot generate main swift file")
-    }
-
-    if
-      let created = try? GeneratorParts.commandFile(forVarName: "root", commandName: paths.projectName)
-        .write(toFile: paths.path(forSwiftFile: "root")),
-      created == false {
-      newCommand.fail(statusCode: 1, errorMessage: "Cannot generate root swift file")
-    }
-
-    if
-      let created = try? GeneratorParts.setupFileContent()
-        .write(toFile: paths.setupSwiftFile),
-      created == false {
-      newCommand.fail(statusCode: 1, errorMessage: "Cannot generate root swift file")
-    }
-
+    try FileOperations.newProjectOperations(paths: paths).perform()
+    
   } catch let error as GuakaError {
     newCommand.fail(statusCode: 1, errorMessage: error.error)
   } catch {

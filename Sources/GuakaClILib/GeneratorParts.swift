@@ -78,24 +78,16 @@ public enum GeneratorParts {
       "    .Package(url: \"\(guakaURL)\", majorVersion: \(guakaVersion)),",
       "    ]",
       ")"
-    ].joined(separator: "\n")
+      ].joined(separator: "\n")
   }
 
-  public static func updateSetupFile(atPath path: String,
+  public static func updateSetupFile(withContent content: String,
                                      byAddingCommand command: String,
-                                     withParent parent: String?) throws -> String {
+                                     withParent parent: String? = nil) throws -> String {
 
-    guard let setupFile = GuakaCliConfig.file.read(fromFile: path) else {
-      throw GuakaError.cannotReadFile(path)
+    guard let indexFound = content.find(string: comamndAddingPlaceholder) else {
+      throw GuakaError.setupFileAltered
     }
-
-    return updateSetupFile(withContent: setupFile, byAddingCommand: command, withParent: parent)
-  }
-
-  static func updateSetupFile(withContent content: String,
-                                     byAddingCommand command: String,
-                                     withParent parent: String? = nil) -> String {
-    let indexFound = content.find(string: comamndAddingPlaceholder)!
 
     var line = ""
     if let parent = parent {
@@ -110,5 +102,38 @@ public enum GeneratorParts {
     let part2 = content[end..<content.endIndex]
 
     return part1 + line + "\n\(comamndAddingPlaceholder)" + part2
+  }
+
+  public static func commandName(forPassedArgs args: [String]) throws -> String {
+    guard let name = args.first else {
+      throw GuakaError.missingCommandName
+    }
+
+    guard args.count == 1 else {
+      throw GuakaError.tooManyArgsPassed
+    }
+
+    if name.characters.contains(" ") {
+      throw GuakaError.wrongCommandNameFormat(name)
+    }
+
+    return name
+  }
+
+  public static func projectName(forPassedArgs args: [String]) throws -> String? {
+    switch args.count {
+    case 0:
+      return nil
+
+    case 1:
+      let name = args.first!
+      if name.characters.contains(" ") {
+        throw GuakaError.wrongCommandNameFormat(name)
+      }
+      return name
+
+    default:
+      throw GuakaError.tooManyArgsPassed
+    }
   }
 }
