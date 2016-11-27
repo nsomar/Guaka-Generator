@@ -14,7 +14,7 @@ class GeneratorPartsTests: XCTestCase {
 
   func testGeneratesCommandFile() {
     let file = GeneratorParts.commandFile(forVarName: "test", commandName: "testit")
-    XCTAssertEqual(file, "import Guaka\n\nvar testCommand = Command(\n  usage: \"testit\", configuration: configuration, run: execute)\n\n\nprivate func configuration(command: Command) {\n\n  command.add(flags: [\n    // Add your flags here\n    ]\n  )\n\n  // Other configurations\n}\n\nprivate func execute(flags: Flags, args: [String]) {\n  // Execute code here\n  print(\"testit called\")\n}")
+    XCTAssertEqual(file, "import Guaka\n\nvar testCommand = try! Command(\n  usage: \"testit\", configuration: configuration, run: execute)\n\n\nprivate func configuration(command: Command) {\n\n  command.add(flags: [\n    // Add your flags here\n    ]\n  )\n\n  // Other configurations\n}\n\nprivate func execute(flags: Flags, args: [String]) {\n  // Execute code here\n  print(\"testit called\")\n}")
   }
 
   func testGeneratesPackageFile() {
@@ -74,7 +74,7 @@ class GeneratorPartsTests: XCTestCase {
     do {
       _ = try GeneratorParts.commandName(forPassedArgs: [])
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "New command name was not passed.\nMissing command name")
+      XCTAssertEqual(e.error, "`guaka add` requires a command that was not given.\nCall `guaka add CommandName` to create a new command.\n")
     } catch {
       XCTFail()
     }

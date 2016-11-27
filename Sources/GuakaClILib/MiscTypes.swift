@@ -29,7 +29,7 @@ public enum GuakaError: Error {
     case .wrongDirectoryGiven(let path):
       return "The path given cannot be used \(path)"
     case .triedToCreateProjectInNonEmptyDirectory(let path):
-      return "Cannot create project in non empty directory \(path)"
+      return "Cannot create project in non empty directory \(path)\n"
     case .failedCreatingFolder(let path):
       return "Failed creating directory \(path)"
     case .cannotCreateFile (let name):

@@ -14,7 +14,7 @@ public struct Paths {
 
   public static var currentPaths: Paths {
     let path = GuakaCliConfig.dir.currentDirectory
-    return Paths(rootDirectory: "/Users/oabdelhafith/Documents/Mac/Swift/Guaka-Toolbox/build/Products/Debug/ttest/")
+    return Paths(rootDirectory: path)
   }
 
   public var sourcesDirectoryPath: String {
