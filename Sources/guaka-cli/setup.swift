@@ -8,7 +8,7 @@
 
 import Guaka
 
-// Generated, dont update
+
 func setupCommands() {
   rootCommand.add(subCommand: newCommand)
   rootCommand.add(subCommand: addCommand)

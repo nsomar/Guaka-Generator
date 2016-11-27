@@ -9,7 +9,7 @@
 import Guaka
 
 var rootCommand = Command(
-  name: "guaka", configuration: configuration, run: execute)
+  usage: "guaka", configuration: configuration, run: execute)
 
 
 private func configuration(command: Command) {
@@ -23,7 +23,7 @@ private func configuration(command: Command) {
     if
       let version = flags["version"]?.value as? Bool,
       version {
-      print("Version 0.0.1")
+      print("Version \(Constants.version)")
       return false
     } 
     return true
