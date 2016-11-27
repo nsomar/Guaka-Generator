@@ -10,13 +10,13 @@ import Guaka
 import FileSystem
 import GuakaClILib
 
-var newCommand = Command(
+var newCommand = try! Command(
   usage: "new [name or path]", configuration: configuration, run: execute)
 
 
 private func configuration(command: Command) {
   command.longMessage = [
-    "guaka new [name or path]: creates a new guaka command line project.",
+    "Creates a new guaka command line project.",
     "",
     "The name defines the creation behavior.",
     "If name is not given:",
@@ -29,7 +29,7 @@ private func configuration(command: Command) {
     "- If the name is not a path, a project will be created with that name",
     ].joined(separator: "\n")
 
-  command.shortMessage = "generates a new guaka command line project"
+  command.shortMessage = "Generate a new guaka command line project"
 
   command.aliases = ["create", "init", "start", "initialize", "generate"]
 

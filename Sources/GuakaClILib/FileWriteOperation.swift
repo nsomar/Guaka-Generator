@@ -35,7 +35,7 @@ public struct FileOperations {
     return FileOperations(operations: operations)
   }
 
-  public static func newCommandOperations(paths: Paths,
+  public static func addCommandOperations(paths: Paths,
                                           commandName name: String,
                                           parent: String?) -> FileOperations {
 

@@ -8,14 +8,15 @@
 
 import Guaka
 
-var rootCommand = Command(
+var rootCommand = try! Command(
   usage: "guaka", configuration: configuration, run: execute)
 
 
 private func configuration(command: Command) {
   
   command.add(flags: [
-    Flag(longName: "version", value: false, inheritable: false),
+    try! Flag(longName: "version", value: false, inheritable: false,
+              description: "Prints the version"),
     ]
   )
   
@@ -28,6 +29,15 @@ private func configuration(command: Command) {
     } 
     return true
   }
+
+  command.longMessage = [
+    "Guaka is a command line application and Swift library to help you create your command line apps.",
+    "",
+    "You can use `guaka` app to generate your Guaka project strucuter.",
+    "The project generate will be a Swift Package Manager application.",
+    "",
+    "Use `guaka new --help` to read more on how to generate your project."
+    ].joined(separator: "\n")
 }
 
 private func execute(flags: Flags, args: [String]) {

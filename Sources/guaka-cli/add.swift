@@ -10,14 +10,14 @@ import Guaka
 import FileSystem
 import GuakaClILib
 
-var addCommand = Command(
-  usage: "add", configuration: configuration, run: execute)
+var addCommand = try! Command(
+  usage: "add CommandName", configuration: configuration, run: execute)
 
 
 private func configuration(command: Command) {
 
   command.add(flags: [
-    Flag(longName: "parent", shortName: "p", value: "root", description: "Adds a new command to the Guaka project")
+    try! Flag(longName: "parent", shortName: "p", value: "root", description: "Adds a new command to the Guaka project")
     ]
   )
 
@@ -53,12 +53,12 @@ private func execute(flags: Flags, args: [String]) {
     }
 
     let parent = flags.get(name: "parent", type: String.self)
-    try FileOperations.newCommandOperations(paths: paths, commandName: name, parent: parent)
+    try FileOperations.addCommandOperations(paths: paths, commandName: name, parent: parent)
       .perform()
 
   } catch let error as GuakaError {
-    newCommand.fail(statusCode: 1, errorMessage: error.error)
+    addCommand.fail(statusCode: 1, errorMessage: error.error)
   } catch {
-    newCommand.fail(statusCode: 1, errorMessage: "General error occured")
+    addCommand.fail(statusCode: 1, errorMessage: "General error occured")
   }
 }

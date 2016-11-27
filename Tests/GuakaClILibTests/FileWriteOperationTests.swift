@@ -184,8 +184,8 @@ class FileWriteOperationTests: XCTestCase {
     }
   }
 
-  func testCreateNewCommandOperationsWithCommand() {
-    let operations = FileOperations.newCommandOperations(
+  func testCreateAddCommandOperationsWithCommand() {
+    let operations = FileOperations.addCommandOperations(
       paths: Paths(rootDirectory: "/root/abc"),
       commandName: "new", parent: nil)
 
@@ -196,8 +196,8 @@ class FileWriteOperationTests: XCTestCase {
     XCTAssertEqual(op.errorString, "new swift")
   }
 
-  func testCreateNewCommandOperationsWithSetup() {
-    let operations = FileOperations.newCommandOperations(
+  func testCreateAddCommandOperationsWithSetup() {
+    let operations = FileOperations.addCommandOperations(
       paths: Paths(rootDirectory: "/root/abc"),
       commandName: "new", parent: nil)
 
@@ -217,7 +217,7 @@ class FileWriteOperationTests: XCTestCase {
     ]
     GuakaCliConfig.file = MockFileType.self
 
-    let operations = FileOperations.newCommandOperations(
+    let operations = FileOperations.addCommandOperations(
       paths: Paths(rootDirectory: "/root/abc"),
       commandName: "new", parent: nil)
 
@@ -243,7 +243,7 @@ class FileWriteOperationTests: XCTestCase {
     ]
     GuakaCliConfig.file = MockFileType.self
 
-    let operations = FileOperations.newCommandOperations(
+    let operations = FileOperations.addCommandOperations(
       paths: Paths(rootDirectory: "/root/abc"),
       commandName: "new", parent: "something")
 
@@ -269,7 +269,7 @@ class FileWriteOperationTests: XCTestCase {
     ]
     GuakaCliConfig.file = MockFileType.self
 
-    let operations = FileOperations.newCommandOperations(
+    let operations = FileOperations.addCommandOperations(
       paths: Paths(rootDirectory: "/root/abc"),
       commandName: "new", parent: "something")
     

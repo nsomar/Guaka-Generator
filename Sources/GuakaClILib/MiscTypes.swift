@@ -41,17 +41,22 @@ public enum GuakaError: Error {
     case .notAGuakaProject:
       return "This command can only be executed in a Guaka project.\nThe following directory does not contain guaka files"
     case .missingCommandName:
-      return "New command name was not passed.\nMissing command name"
+      return [
+        "`guaka add` requires a command that was not given.",
+        "Call `guaka add CommandName` to create a new command.",
+        ""
+        ].joined(separator: "\n")
+
     case .wrongCommandNameFormat(let name):
       return [ "The command name passed `\(name)` is incorrect.",
-               "Please use only letters, numbers, underscodes and dashes.",
-               "",
-               "Valid examples:",
-               "   guaka new test",
-               "   guaka new MyCommand",
-               "   guaka new my-command",
-               "   guaka new my_command",
-               "   guaka new myCommand"].joined(separator: "\n")
+        "Please use only letters, numbers, underscodes and dashes.",
+        "",
+        "Valid examples:",
+        "   guaka new test",
+        "   guaka new MyCommand",
+        "   guaka new my-command",
+        "   guaka new my_command",
+        "   guaka new myCommand"].joined(separator: "\n")
     case .tooManyArgsPassed:
       return "Too many arguments passed to command."
     }

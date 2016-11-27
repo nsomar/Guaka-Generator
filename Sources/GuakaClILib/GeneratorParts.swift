@@ -48,7 +48,7 @@ public enum GeneratorParts {
     return [
       importGuaka,
       "" ,
-      "var \(varName)Command = Command(",
+      "var \(varName)Command = try! Command(",
       "  usage: \"\(commandName)\", configuration: configuration, run: execute)",
       "",
       "",
