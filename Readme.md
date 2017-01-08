@@ -13,8 +13,7 @@ Read more about Guaka:
 The easies way to install guaka is using homebrew
 
 ```
-> brew tap getGuaka/tap 
-> brew install guaka
+> brew install getGuaka/tap/guaka
 ```
 
 ### Download the prebuilt version(mac)
