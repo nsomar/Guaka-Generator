@@ -13,11 +13,11 @@ Read more about Guaka:
 The easies way to install guaka is using homebrew
 
 ```
-> brew install getGuaka/tap/guaka
+> brew install oarrabi/tap/guaka
 ```
 
 ### Download the prebuilt version(mac)
-You can get the most stable version [here](https://github.com/getGuaka/Guaka-Generator/releases)
+You can get the most stable version [here](https://github.com/oarrabi/Guaka-Generator/releases)
 
 ### Build from source
 
