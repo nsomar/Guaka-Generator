@@ -1,6 +1,6 @@
-# Guaka Toolbox
+# Guaka Generator
 
-Guaka generator command line application.
+Guaka command line application generator app.
 
 Read more about Guaka:
 
@@ -17,7 +17,7 @@ The easies way to install guaka is using homebrew
 ```
 
 ### Download the prebuilt version(mac)
-You can get the most stable version [here](https://github.com/getGuaka/Guaka-Toolbox/releases)
+You can get the most stable version [here](https://github.com/getGuaka/Guaka-Generator/releases)
 
 ### Build from source
 
