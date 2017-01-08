@@ -22,7 +22,7 @@ public struct FileSystemFile: FileType {
 
   public static func read(fromFile file: String) -> String? {
     if let string = try? String.read(contentsOfFile: file) {
-      return string!
+      return string
     }
     return nil
   }

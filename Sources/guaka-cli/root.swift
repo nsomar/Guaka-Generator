@@ -1,5 +1,5 @@
 //
-//  git.swift
+//  root.swift
 //  Guaka
 //
 //  Created by Omar Abdelhafith on 05/11/2016.
@@ -8,15 +8,15 @@
 
 import Guaka
 
-var rootCommand = try! Command(
+var rootCommand = Command(
   usage: "guaka", configuration: configuration, run: execute)
 
 
 private func configuration(command: Command) {
   
   command.add(flags: [
-    try! Flag(longName: "version", value: false, inheritable: false,
-              description: "Prints the version"),
+    Flag(longName: "version", value: false,
+              description: "Prints the version", inheritable: false),
     ]
   )
   
@@ -33,7 +33,7 @@ private func configuration(command: Command) {
   command.longMessage = [
     "Guaka is a command line application and Swift library to help you create your command line apps.",
     "",
-    "You can use `guaka` app to generate your Guaka project strucuter.",
+    "You can use `guaka` app to generate your Guaka project structure.",
     "The project generate will be a Swift Package Manager application.",
     "",
     "Use `guaka new --help` to read more on how to generate your project."

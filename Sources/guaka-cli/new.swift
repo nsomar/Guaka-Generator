@@ -1,5 +1,5 @@
 //
-//  rebase.swift
+//  new.swift
 //  Guaka
 //
 //  Created by Omar Abdelhafith on 05/11/2016.
@@ -10,7 +10,7 @@ import Guaka
 import FileSystem
 import GuakaClILib
 
-var newCommand = try! Command(
+var newCommand = Command(
   usage: "new [name or path]", configuration: configuration, run: execute)
 
 
@@ -20,13 +20,13 @@ private func configuration(command: Command) {
     "",
     "The name defines the creation behavior.",
     "If name is not given:",
-    "- If the current folder is empty it will be used as the project name",
-    "- If the current folder has contents, a guaka project wont be created",
+    "  - If the current folder is empty it will be used as the project name",
+    "  - If the current folder has contents, a guaka project wont be created",
     "",
     "If name or path is given:",
-    "- If the name is a relative or absolute path, the project will be created at that path",
-    "- If the name is a relative path, the project will be created at that path",
-    "- If the name is not a path, a project will be created with that name",
+    "  - If the name is a relative or absolute path, the project will be created at that path",
+    "  - If the name is a relative path, the project will be created at that path",
+    "  - If the name is not a path, a project will be created with that name",
     ].joined(separator: "\n")
 
   command.shortMessage = "Generate a new guaka command line project"
@@ -37,9 +37,10 @@ private func configuration(command: Command) {
     "  Create a guaka project with a name:",
     "    guaka new mycommand",
     "",
-    "  Create a guaka project with a name:",
+    "  Create a guaka project with a path:",
     "    guaka new some/path",
-    "    guaka new ~/Desktop/some/path"
+    "    guaka new ~/Desktop/some/path",
+    "    guaka new /some/absolute/path"
     ].joined(separator: "\n")
 }
 
@@ -50,12 +51,26 @@ private func execute(flags: Flags, args: [String]) {
     try DirectoryUtilities.createDirectoryStrucutre(forName: name)
 
     try FileOperations.newProjectOperations(paths: paths).perform()
-    
+
+    printNewSuccess(path: paths.rootDirectory)
   } catch let error as GuakaError {
     newCommand.fail(statusCode: 1, errorMessage: error.error)
   } catch {
     newCommand.fail(statusCode: 1, errorMessage: "General error occured")
   }
-  
+
 }
 
+private func printNewSuccess(path: String) {
+  let message = [
+    "A new Guaka project was created at:",
+    "  \(path)",
+    "",
+    "Next steps:",
+    "  - cd into the created project",
+    "  - build the project `swift build`",
+    "  - add sub commands with `guaka add [command name]"
+  ]
+
+  print(message.joined(separator: "\n"))
+}

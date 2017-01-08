@@ -1,34 +1,35 @@
-# Guaka Sample App
+# Guaka Toolbox
 
-Sample app built with [Guaka](https://github.com/oarrabi/Guaka.git) (it also uses [ENV](https://github.com/oarrabi/ENV.git))
+Guaka generator command line application.
 
-## Using the sample
+Read more about Guaka:
 
-Clone it
-`git clone https://github.com/oarrabi/Guaka-Sample-App.git`
+- [Guaka main repository](https://github.com/oarrabi/Guaka)
+- [Guaka documentation](docs.getguaka.com)
 
-Build it
-`swift build`
+## Installing
 
-Then run it
-`./.build/debug/mytest`
-
-To learn about the app pass `--help` (or `-h`)
+### Installing with homebrew (mac)
+The easies way to install guaka is using homebrew
 
 ```
-> ./.build/debug/mytest -h
-print is just the commands you need, it print everything to the console
-
-Usage:
-  print [flags]
-  print [command]
-
-Flags:
-      --postfix string  prints a postfix (default )
-  -p, --prefix string   prints a prefix (default )
-
-Use "print [command] --help" for more information about a command.
+> brew tap getGuaka/tap 
+> brew install guaka
 ```
+
+### Download the prebuilt version(mac)
+You can get the most stable version [here](https://github.com/getGuaka/Guaka-Toolbox/releases)
+
+### Build from source
+
+- Clone the repo
+- Run `make build-project` this generates `bin/guaka`
+- Copy `bin/guaka` to your bin folder
+
+## Todo
+
+- [ ] add unix stable builds
+- [ ] Add buil from source instructions for linux
 
 ## Contributing
 

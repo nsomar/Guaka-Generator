@@ -1,5 +1,5 @@
 //
-//  remote.swift
+//  add.swift
 //  Guaka
 //
 //  Created by Omar Abdelhafith on 05/11/2016.
@@ -10,14 +10,14 @@ import Guaka
 import FileSystem
 import GuakaClILib
 
-var addCommand = try! Command(
+var addCommand = Command(
   usage: "add CommandName", configuration: configuration, run: execute)
 
 
 private func configuration(command: Command) {
 
   command.add(flags: [
-    try! Flag(longName: "parent", shortName: "p", value: "root", description: "Adds a new command to the Guaka project")
+    Flag(shortName: "p", longName: "parent", value: "root", description: "Adds a new command to the Guaka project")
     ]
   )
 
@@ -39,6 +39,9 @@ private func configuration(command: Command) {
     "  Add a new command to a different parent command:",
     "    guaka add new-command --parent other-command",
     "    guaka add new-command -p other-command",
+    "",
+    "  Adding a command creates a new swift file under `Sources` folder",
+    "    `guaka add sub-command` creates `Sources/sub-command.swift`"
     ].joined(separator: "\n")
 }
 
@@ -56,9 +59,26 @@ private func execute(flags: Flags, args: [String]) {
     try FileOperations.addCommandOperations(paths: paths, commandName: name, parent: parent)
       .perform()
 
+    printAddSuccess(setupFile: paths.setupSwiftFile, commandFile: paths.path(forSwiftFile: name))
+
   } catch let error as GuakaError {
     addCommand.fail(statusCode: 1, errorMessage: error.error)
   } catch {
     addCommand.fail(statusCode: 1, errorMessage: "General error occured")
   }
+}
+
+private func printAddSuccess(setupFile: String, commandFile: String) {
+  let message = [
+    "A new Command has been created at:",
+    "  \(commandFile)",
+    "Setup file has been altered at:",
+    "  \(setupFile)",
+    "",
+    "Next steps:",
+    "  - build the project `swift build`",
+    "  - test the command added"
+  ]
+
+  print(message.joined(separator: "\n"))
 }
