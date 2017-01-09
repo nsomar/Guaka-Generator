@@ -6,7 +6,7 @@
 //
 //
 
-import FileSystem
+import FileUtils
 
 public protocol DirectoryType {
   static var currentDirectory: String { get }

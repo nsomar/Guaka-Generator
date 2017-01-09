@@ -7,7 +7,7 @@
 //
 
 import Guaka
-import FileSystem
+import FileUtils
 import GuakaClILib
 
 var newCommand = Command(

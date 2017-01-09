@@ -6,7 +6,7 @@
 //
 //
 
-import FileSystem
+import FileUtils
 
 public protocol FileType {
   static func write(string: String, toFile file: String) -> Bool
