@@ -1,0 +1,12 @@
+sudo: false
+osx_image: xcode8.1
+deploy:
+  provider: script
+  script: release-and-deploy-mac VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN}
+  file: bin/mac/guaka
+  on:
+    repo: oarrabi/Guaka-Generator
+    tags: true
+env:
+  global:
+    secure: CK8UAjG6OZv6sdFF+ghJyoo9n3PK6XlqH9f1Nt8mxmSkkcmprbUsrwIEdcheZvUUC4I7cR1dCwCgqXbB3Ik7CmRTWjv4ZLoJnbLNXRvNlpu7wzEq/pSD4VmdbssSMGK5yP0EMbU+RzZnVmsNMdu7OiSuca/UHihSUbIMYLoInQOo77+6ZpYznjtpWijTZBVGCB6ETBxXn2L0dx2mjOmS2Ti1FRZko0Y1KjqU+GIbEfjo0LJUOI2Olr0+R+eax0ezkLT4xYycoaWBNwxauqQlUToVnCOlCm97QdaGjT0t0Xy4UVCkByBw42VG8oRPRCHicRcVB+SJr1DDY/KrfmQSV7DPEn2XSE4bCwvaaIOal94o1zMZ5mgdrD8UialvNq0wVhlsIQ1Cdvq7i7EXXQ5FpjR788nexlIer0dW9Qoy5mMy0tN1hxbTE3/E/GibqZG5+jqx1EHEMhOzNTWa4LtETzV++9ESGPYO3iQSxRRi4mzOrPeg8BfGfTbpZZXVOKAUkC5YgSJZPVQ1/juZOaAlJ7d8MKdx/GcELqLvLOh9Yx03/5Or6Em+M24UxPXjoNi0w/cDlrsGP2Ye85v4MhVJgP0RcCaY6bJWxsF9gngOqEnmKFh1idbDvWmcoi3rpr8CtbmtA9QzJWgY3qxxHDAmH2Wmg0BRN4gclxBe86TsGZU=
