@@ -15,7 +15,7 @@ SHA=$(shasum -a 256 bin/mac/guaka | cut -f 1 -d " ")
 echo $SHA
 
 cd /tmp
-git clone git@github.com:oarrabi/homebrew-tap.git
+git clone https://github.com/oarrabi/homebrew-tap.git
 cd homebrew-tap
 ls
 pwd
