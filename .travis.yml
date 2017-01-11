@@ -8,7 +8,7 @@ script:
   - make release-and-deploy-mac VERSION=0.2.2 GITHUB_TOKEN=${GITHUB_TOKEN}
 before_install:
   - echo ${TOOLCHAIN_VERSION}
-  - curl -O https://swift.org/builds/swift-3.0.2-RELEASE/xcode/swift-3.0.2-RELEASE/swift-3.0.2-RELEASE-osx.pkg
+  - curl -O https://swift.org/builds/swift-3.0.1-release/xcode/swift-3.0.1-RELEASE/swift-3.0.1-RELEASE-osx.pkg
   - sudo installer -pkg swift-3.0.2-RELEASE-osx.pkg -target /
 deploy:
   provider: script
