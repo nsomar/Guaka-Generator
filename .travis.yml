@@ -4,7 +4,7 @@ language: objective-c
 env:
   - TOOLCHAINS=swift
 script:
-  - swift build --fetch
+  - make build-project-mac
   - make release-and-deploy-mac VERSION=0.2.2 GITHUB_TOKEN=${GITHUB_TOKEN}
 before_install:
   - echo ${TOOLCHAIN_VERSION}
