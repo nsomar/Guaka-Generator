@@ -1,11 +1,11 @@
 sudo: false
 osx_image: xcode8.1
+language: objective-c
 deploy:
   provider: script
   script: release-and-deploy-mac VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN}
   file: bin/mac/guaka
   on:
-    repo: oarrabi/Guaka-Generator
     tags: true
 env:
   global:
