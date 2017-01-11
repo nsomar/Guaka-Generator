@@ -8,8 +8,6 @@ script:
   - make release-and-deploy-mac VERSION=0.2.2 GITHUB_TOKEN=${GITHUB_TOKEN}
 before_install:
   - echo ${TOOLCHAIN_VERSION}
-  - brew update
-  - brew install go
   - go get github.com/aktau/github-release
   # - curl -O https://swift.org/builds/swift-3.0.1-release/xcode/swift-3.0.1-RELEASE/swift-3.0.1-RELEASE-osx.pkg
   # - sudo installer -pkg swift-3.0.1-RELEASE-osx.pkg -target /
