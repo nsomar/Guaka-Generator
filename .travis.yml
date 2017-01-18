@@ -4,8 +4,8 @@ language: objective-c
 env:
   - TOOLCHAINS=swift
 script:
-  - make build-project-mac
-  - make release-and-deploy-mac VERSION=0.2.4 GITHUB_TOKEN=${GITHUB_TOKEN}
+  - make build-project-darwin
+  - make release-and-deploy-darwin VERSION=0.2.4 GITHUB_TOKEN=${GITHUB_TOKEN}
 before_install:
   - echo ${TOOLCHAIN_VERSION}
   - go get github.com/aktau/github-release
@@ -14,8 +14,8 @@ before_install:
   # - sudo installer -pkg swift-3.0.1-RELEASE-osx.pkg -target /
 deploy:
   provider: script
-  script: make release-and-deploy-mac VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN}
-  file: bin/mac/guaka
+  script: make release-and-deploy-darwin VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN}
+  file: bin/darwin/guaka
   on:
     tags: true
 env:

@@ -2,42 +2,43 @@ install:
 	make build-project
 	cp bin/guaka ~/bin/guaka
 
+clean:
+	rm -rf .build
+	rm -rf bin/darwin
+	rm -rf bin/linux
+
 build-project:
 	swift build -Xswiftc -static-stdlib
 
-docker-build:
-	docker run --privileged -i -t --name swiftfun-builder --volume $PWD:/work swiftdocker/swift:latest /bin/sh -c "cd /work & ls"
-	make docker-rm
-
-docker-attach:
-	docker run --privileged -i -t --name swiftfun-builder --volume $PWD:/work swiftdocker/swift:latest /bin/bash
-
-docker-rm:
-	docker rm swiftfun-builder
-
-build-project-mac:
-	rm -rf .build
-	rm -rf bin/mac
-	mkdir -p bin/mac
+build-project-darwin:
+	mkdir -p bin/darwin
 	make build-project
-	cp ./.build/debug/guaka-cli bin/mac/guaka
+	cp ./.build/debug/guaka-cli bin/darwin/guaka
 
-build-project-ubnunt:
-	rm -rf .build
-	rm -rf bin/ubuntu
-	mkdir -p bin/ubuntu
+build-project-linux:
+	mkdir -p bin/linux
 	make build-project
-	cp ./.build/debug/guaka-cli bin/ubuntu/guaka
+	cp -f ./.build/debug/guaka-cli bin/linux/guaka
 
-release-mac:
-	bash scripts/release-mac.sh
+release-darwin:
+	bash scripts/release-darwin.sh
 
-deploy-mac:
-	bash scripts/deploy-mac.sh
+deploy-darwin:
+	bash scripts/deploy-darwin.sh
 
-release-and-deploy-mac:
-	make release-mac
-	make deploy-mac
+release-linux:
+	bash scripts/release-linux.sh
+
+deploy-linux:
+	bash scripts/deploy-darwin.sh
+
+release-and-deploy-darwin:
+	make release-darwin
+	make deploy-darwin
+
+release-and-deploy-linux:
+	make release-linux
+	make deploy-linux
 
 sha256:
 	@shasum -a 256 bin/guaka | cut -f 1 -d " "
