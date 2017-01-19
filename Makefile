@@ -1,7 +1,6 @@
 install:
 	make build-project
 	cp bin/guaka ~/bin/guaka
-
 clean:
 	rm -rf .build
 	rm -rf bin/darwin
@@ -23,22 +22,15 @@ build-project-linux:
 release-darwin:
 	bash scripts/release-darwin.sh
 
-deploy-darwin:
-	bash scripts/deploy-darwin.sh
-
 release-linux:
 	bash scripts/release-linux.sh
 
-deploy-linux:
-	bash scripts/deploy-darwin.sh
+publish-homebrew-mac:
+	bash scripts/publish-homebrew-mac.sh
 
 release-and-deploy-darwin:
 	make release-darwin
-	make deploy-darwin
-
-release-and-deploy-linux:
-	make release-linux
-	make deploy-linux
+	make publish-homebrew-mac
 
 sha256:
 	@shasum -a 256 bin/guaka | cut -f 1 -d " "
