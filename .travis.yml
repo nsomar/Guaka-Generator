@@ -5,7 +5,7 @@ env:
   - TOOLCHAINS=swift
 script:
   - make build-project-darwin
-  - make release-and-deploy-darwin VERSION=${VERSION} GITHUB_TOKEN=${GITHUB_TOKEN}
+  - make release-and-deploy-darwin VERSION=0.2.3 GITHUB_TOKEN=${GITHUB_TOKEN}
 before_install:
   - echo ${TOOLCHAIN_VERSION}
   - go get github.com/aktau/github-release

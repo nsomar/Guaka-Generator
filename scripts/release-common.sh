@@ -31,7 +31,7 @@ release() {
 
     build_tarball RELEASE_TARBALL_PATH $RELEASE $BINARY
 
-    github-release -v release --user oarrabi --security-token ${GITHUB_TOKEN} --repo Guaka-Generator --tag ${VERSION} --name "Version ${VERSION}"
-    github-release -v upload --user oarrabi --security-token ${GITHUB_TOKEN} --repo Guaka-Generator --tag ${VERSION} --name $RELEASE_TARBALL --file $RELEASE_TARBALL_PATH
+    github-release release --user oarrabi --security-token ${GITHUB_TOKEN} --repo Guaka-Generator --tag ${VERSION} --name "Version ${VERSION}"
+    github-release upload --user oarrabi --security-token ${GITHUB_TOKEN} --repo Guaka-Generator --tag ${VERSION} --name $RELEASE_TARBALL --file $RELEASE_TARBALL_PATH
 }
 
