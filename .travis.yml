@@ -1,34 +1,30 @@
-sudo: false
+os:
+- linux
+- osx
+sudo: required
+dist: trusty
 osx_image: xcode8.1
-language: objective-c
-
-env:
-  - TOOLCHAINS=swift
+language: node_js
 
 script:
-  - make generate
   - make test
-  - make coverage
 
-before_install:
-  - echo ${TOOLCHAIN_VERSION}
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+install:
+  - make install-swift
   - go get github.com/aktau/github-release
   - export PATH="$PATH:$GOBIN"
-  # - curl -O https://swift.org/builds/swift-3.0.1-release/xcode/swift-3.0.1-RELEASE/swift-3.0.1-RELEASE-osx.pkg
-  # - sudo installer -pkg swift-3.0.1-RELEASE-osx.pkg -target /
+
 deploy:
   provider: script
-
   script:
-  - make build-project-darwin
-  - make release-and-deploy-darwin VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN}
-
-  file: bin/darwin/guaka
+    - make release-and-deploy
   on:
     tags: true
 env:
   global:
     - GOPATH=~/go
     - GOBIN=~/go/bin
-    - TOOLCHAIN_VERSION=swift-3.0.2-RELEASE
     - secure: CK8UAjG6OZv6sdFF+ghJyoo9n3PK6XlqH9f1Nt8mxmSkkcmprbUsrwIEdcheZvUUC4I7cR1dCwCgqXbB3Ik7CmRTWjv4ZLoJnbLNXRvNlpu7wzEq/pSD4VmdbssSMGK5yP0EMbU+RzZnVmsNMdu7OiSuca/UHihSUbIMYLoInQOo77+6ZpYznjtpWijTZBVGCB6ETBxXn2L0dx2mjOmS2Ti1FRZko0Y1KjqU+GIbEfjo0LJUOI2Olr0+R+eax0ezkLT4xYycoaWBNwxauqQlUToVnCOlCm97QdaGjT0t0Xy4UVCkByBw42VG8oRPRCHicRcVB+SJr1DDY/KrfmQSV7DPEn2XSE4bCwvaaIOal94o1zMZ5mgdrD8UialvNq0wVhlsIQ1Cdvq7i7EXXQ5FpjR788nexlIer0dW9Qoy5mMy0tN1hxbTE3/E/GibqZG5+jqx1EHEMhOzNTWa4LtETzV++9ESGPYO3iQSxRRi4mzOrPeg8BfGfTbpZZXVOKAUkC5YgSJZPVQ1/juZOaAlJ7d8MKdx/GcELqLvLOh9Yx03/5Or6Em+M24UxPXjoNi0w/cDlrsGP2Ye85v4MhVJgP0RcCaY6bJWxsF9gngOqEnmKFh1idbDvWmcoi3rpr8CtbmtA9QzJWgY3qxxHDAmH2Wmg0BRN4gclxBe86TsGZU=
