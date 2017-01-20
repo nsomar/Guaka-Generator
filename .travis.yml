@@ -1,11 +1,15 @@
 sudo: false
 osx_image: xcode8.1
 language: objective-c
+
 env:
   - TOOLCHAINS=swift
+
 script:
-  - make build-project-darwin
-  - make release-and-deploy-darwin VERSION=0.2.3 GITHUB_TOKEN=${GITHUB_TOKEN}
+  - make generate
+  - make test
+  - make coverage
+
 before_install:
   - echo ${TOOLCHAIN_VERSION}
   - go get github.com/aktau/github-release
@@ -14,7 +18,11 @@ before_install:
   # - sudo installer -pkg swift-3.0.1-RELEASE-osx.pkg -target /
 deploy:
   provider: script
-  script: make release-and-deploy-darwin VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN}
+
+  script:
+  - make build-project-darwin
+  - make release-and-deploy-darwin VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN}
+
   file: bin/darwin/guaka
   on:
     tags: true

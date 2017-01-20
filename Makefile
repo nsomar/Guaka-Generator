@@ -1,10 +1,26 @@
 install:
 	make build-project
 	cp bin/guaka ~/bin/guaka
+
+test:
+	xcodebuild -project guaka-cli.xcodeproj -scheme guaka-cli build test
+
+coverage:
+	slather coverage guaka-cli.xcodeproj
+
+generate:
+	swift package generate-xcodeproj --enable-code-coverage
+
+clean-darwin:
+	rm -rf bin/darwin
+
+clean-linux:
+	rm -rf bin/linux
+
 clean:
 	rm -rf .build
-	rm -rf bin/darwin
-	rm -rf bin/linux
+	make clean-darwin
+	make clean-linux
 
 build-project:
 	swift build -Xswiftc -static-stdlib
