@@ -3,7 +3,7 @@ if [ -z "$VERSION" ]; then
     exit 1
 fi
 
-SHA=$(shasum -a 256 bin/darwin/guaka | cut -f 1 -d " ")
+SHA=$(shasum -a 256 bin/darwin/guaka-generator-0.1.1-darwin-X64.tar.bz2 | cut -f 1 -d " ")
 echo $SHA
 
 cd /tmp

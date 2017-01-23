@@ -38,6 +38,7 @@ build-project-darwin:
 	mkdir -p bin/darwin
 	make build-project
 	cp ./.build/debug/guaka-cli bin/darwin/guaka
+	@echo "\nDarwin version built at bin/darwin/guaka\n"
 
 build-project-linux:
 	mkdir -p bin/linux
@@ -47,8 +48,18 @@ build-project-linux:
 release-darwin:
 	bash scripts/release-darwin.sh
 
+release-darwin-local:
+	rm -rf .build
+	make build-project-darwin
+	bash scripts/release-darwin.sh
+
 release-linux:
 	bash scripts/release-linux.sh
+
+release-linux-local:
+	rm -rf .build
+	make clean-linux
+	make build-project-linux
 
 publish-homebrew-mac:
 	bash scripts/publish-homebrew-mac.sh
@@ -56,6 +67,15 @@ publish-homebrew-mac:
 release-and-deploy-darwin:
 	make release-darwin
 	make publish-homebrew-mac
+
+build-linux-docker:
+	@echo "Runs release-linux-local inside a docker image"
+	@echo "The built file is located at bin/linux/guaka"
+	docker-compose run -w /work swift
+	@echo "\nLinux version built at bin/linux/guaka\n"
+
+release-all-local: clean build-linux-docker build-project-darwin
+	@echo "\nBinaries built at bin/\n"
 
 release-and-deploy:
 	if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make build-project-darwin release-darwin VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN} ; fi
