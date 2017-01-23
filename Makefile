@@ -22,9 +22,11 @@ generate:
 
 clean-darwin:
 	rm -rf bin/darwin
+	rm -rf release/darwin
 
 clean-linux:
 	rm -rf bin/linux
+	rm -rf release/linux
 
 clean:
 	rm -rf .build
@@ -61,12 +63,8 @@ release-linux-local:
 	make clean-linux
 	make build-project-linux
 
-publish-homebrew-mac:
+publish-local-darwin:
 	bash scripts/publish-homebrew-mac.sh
-
-release-and-deploy-darwin:
-	make release-darwin
-	make publish-homebrew-mac
 
 build-linux-docker:
 	@echo "Runs release-linux-local inside a docker image"
@@ -74,8 +72,27 @@ build-linux-docker:
 	docker-compose run -w /work swift
 	@echo "\nLinux version built at bin/linux/guaka\n"
 
-release-all-local: clean build-linux-docker build-project-darwin
-	@echo "\nBinaries built at bin/\n"
+build-all-local: clean build-linux-docker build-project-darwin
+	@echo "Binaries built at bin/\n"
+
+release-local:
+	make build-all-local
+	@echo "Starting the github release for version ${VERSION}/\n"
+	bash scripts/github-release.sh
+
+	@echo "Upload darwin binary\n"
+	bash scripts/release-darwin.sh
+
+	@echo "Upload linux binary\n"
+	bash scripts/release-linux.sh
+
+publish-local:
+	make publish-local-darwin
+
+release-publish-local:
+	make release-local
+	make publish-local
+
 
 release-and-deploy:
 	if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make build-project-darwin release-darwin VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN} ; fi
