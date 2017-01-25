@@ -13,3 +13,25 @@ build_tarball() {
     RELEASE_TARBALL_PATH=$RELEASE_DIR/$RELEASE_TARBALL
     eval "$1=$RELEASE_TARBALL_PATH"
 }
+
+# Releases the artifact to Github Releases page.
+# $1 The version to be released
+# $2 The plaform: linux | darwin.
+# $3 binary artifact to be released.
+# $4 Github token.
+release() {
+    VERSION=$1
+    PLATFORM=$2
+    BINARY=$3
+    GITHUB_TOKEN=$4
+
+    RELEASE_TARBALL_PATH=-1
+    RELEASE=Guaka-Generator-$VERSION-$PLATFORM-X64
+    RELEASE_TARBALL=$RELEASE.tar.bz2
+
+    build_tarball RELEASE_TARBALL_PATH $RELEASE $BINARY
+
+    github-release release --user oarrabi --security-token ${GITHUB_TOKEN} --repo Guaka-Generator --tag ${VERSION} --name "Version ${VERSION}"
+    github-release upload --user oarrabi --security-token ${GITHUB_TOKEN} --repo Guaka-Generator --tag ${VERSION} --name $RELEASE_TARBALL --file $RELEASE_TARBALL_PATH
+}
+

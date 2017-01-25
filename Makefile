@@ -2,10 +2,34 @@ install:
 	make build-project
 	cp bin/guaka ~/bin/guaka
 
+test:
+	bash scripts/test.sh
+
+install-swift:
+	eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/02090c7ede5a637b76e6df1710e83cd0bbe7dcdf/swiftenv-install.sh)"
+
+test-darwin:
+	xcodebuild -project guaka-cli.xcodeproj -scheme guaka-cli build test
+
+test-linux:
+	swift test
+
+coverage:
+	slather coverage guaka-cli.xcodeproj
+
+generate:
+	swift package generate-xcodeproj --enable-code-coverage
+
+clean-darwin:
+	rm -rf bin/darwin
+
+clean-linux:
+	rm -rf bin/linux
+
 clean:
 	rm -rf .build
-	rm -rf bin/darwin
-	rm -rf bin/linux
+	make clean-darwin
+	make clean-linux
 
 build-project:
 	swift build -Xswiftc -static-stdlib
@@ -23,22 +47,19 @@ build-project-linux:
 release-darwin:
 	bash scripts/release-darwin.sh
 
-deploy-darwin:
-	bash scripts/deploy-darwin.sh
-
 release-linux:
 	bash scripts/release-linux.sh
 
-deploy-linux:
-	bash scripts/deploy-darwin.sh
+publish-homebrew-mac:
+	bash scripts/publish-homebrew-mac.sh
 
 release-and-deploy-darwin:
 	make release-darwin
-	make deploy-darwin
+	make publish-homebrew-mac
 
-release-and-deploy-linux:
-	make release-linux
-	make deploy-linux
+release-and-deploy:
+	if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make build-project-darwin release-darwin VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN} ; fi
+	if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make build-project-linux release-linux VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN} ; fi
 
 sha256:
 	@shasum -a 256 bin/guaka | cut -f 1 -d " "
