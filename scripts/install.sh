@@ -1,5 +1,5 @@
 #! /bin/bash
-echo "Installing Guaka generator. Please wait.."
+echo "Installing Guaka generator. Please wait..."
 REPOSITORY="oarrabi/Guaka-Generator"
 
 DEFAULT_OS=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -15,7 +15,7 @@ ARCH=${4:-$DEFAULT_ARCH}
 REPOSITORY_OWNER=$(echo $REPOSITORY | cut -f1 -d/)
 REPOSITORY_NAME=$(echo $REPOSITORY | cut -f2 -d/)
 RELEASES_URL="https://api.github.com/repos/$REPOSITORY_OWNER/$REPOSITORY_NAME/releases"
-RELEASES_RESPONSE=$(curl -s "$RELEASES_URL")
+RELEASES_RESPONSE=$(curl -sSf "$RELEASES_URL")
 if [ $? -ne 0 ]; then
     echo "Error determining latest release version."
     exit 1
@@ -35,7 +35,7 @@ if [ -f $TEMP_TARBAL ] ; then
     rm $TEMP_TARBAL
 fi
 
-curl -sL "$DOWNLOAD_URL" -o $TEMP_TARBAL
+curl -sSfL "$DOWNLOAD_URL" -o $TEMP_TARBAL
 if [ $? -ne 0 ]; then
     echo "Error downloading the release tarball."
     exit 1
