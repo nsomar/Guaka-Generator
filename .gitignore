@@ -195,4 +195,5 @@ guaka-cli.xcodeproj
 Packages/
 
 ### Objective-C Patch ###
+.DS_STORE
 0
