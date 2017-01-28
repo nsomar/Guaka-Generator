@@ -4,10 +4,10 @@
 # $3 binary to be released.
 
 build_tarball() {
-    RELEASE_DIR=/tmp/$2
+    RELEASE_DIR=${PWD}/release/$2
     rm -rf $RELEASE_DIR
     mkdir -p $RELEASE_DIR
-    mv $3 $RELEASE_DIR/
+    cp $3 $RELEASE_DIR/
     RELEASE_TARBALL=$2.tar.bz2
     cd $RELEASE_DIR && tar -cjSf $RELEASE_TARBALL guaka
     RELEASE_TARBALL_PATH=$RELEASE_DIR/$RELEASE_TARBALL
@@ -30,8 +30,6 @@ release() {
     RELEASE_TARBALL=$RELEASE.tar.bz2
 
     build_tarball RELEASE_TARBALL_PATH $RELEASE $BINARY
-
-    github-release release --user oarrabi --security-token ${GITHUB_TOKEN} --repo Guaka-Generator --tag ${VERSION} --name "Version ${VERSION}"
     github-release upload --user oarrabi --security-token ${GITHUB_TOKEN} --repo Guaka-Generator --tag ${VERSION} --name $RELEASE_TARBALL --file $RELEASE_TARBALL_PATH
 }
 

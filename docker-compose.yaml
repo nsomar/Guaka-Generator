@@ -1,0 +1,7 @@
+swift:
+  image: swiftdocker/swift
+  volumes:
+    - .:/work
+  environment:
+    PWD: /work
+  command: make release-linux-local
