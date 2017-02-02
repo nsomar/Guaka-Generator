@@ -48,7 +48,7 @@ class GeneratorPartsTests: XCTestCase {
     do {
       _ = try GeneratorParts.updateSetupFile(withContent: "abcd", byAddingCommand: "new", withParent: "root")
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "Guaka setup.swift file has been altered.\nThe placeholder used to insert commands cannot be found   // Command adding placeholder, edit this line.\nYou can try to add it yourself by updating `setup.swift` to look like\n\nimport Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  // Command adding placeholder, edit this line\n}\n\nAdding command wont be possible.")
+      XCTAssertEqual(e.error, "Guaka setup.swift file has been altered.\nThe placeholder used to insert commands cannot be found   // Command adding placeholder, edit this line.\nYou can try to add it yourself by updating `setup.swift` to look like\n\nimport Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  // Command adding placeholder, edit this line\n}\n\nAdding command wont be possible.".f.red)
     } catch {
       XCTFail()
     }
@@ -74,7 +74,7 @@ class GeneratorPartsTests: XCTestCase {
     do {
       _ = try GeneratorParts.commandName(forPassedArgs: [])
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "`guaka add` requires a command that was not given.\nCall `guaka add CommandName` to create a new command.\n")
+      XCTAssertEqual(e.error, "`guaka add` requires a command that was not given.\nCall `guaka add CommandName` to create a new command.\n".f.red)
     } catch {
       XCTFail()
     }
@@ -84,7 +84,7 @@ class GeneratorPartsTests: XCTestCase {
     do {
       _ = try GeneratorParts.commandName(forPassedArgs: ["a", "b"])
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "Too many arguments passed to command.")
+      XCTAssertEqual(e.error, "Too many arguments passed to command.".f.red)
     } catch {
       XCTFail()
     }
@@ -94,7 +94,7 @@ class GeneratorPartsTests: XCTestCase {
     do {
       _ = try GeneratorParts.commandName(forPassedArgs: ["abc def"])
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "The command name passed `abc def` is incorrect.\nPlease use only letters, numbers, underscodes and dashes.\n\nValid examples:\n   guaka new test\n   guaka new MyCommand\n   guaka new my-command\n   guaka new my_command\n   guaka new myCommand")
+      XCTAssertEqual(e.error, "The command name passed `abc def` is incorrect.\nPlease use only letters, numbers, underscodes and dashes.\n\nValid examples:\n   guaka new test\n   guaka new MyCommand\n   guaka new my-command\n   guaka new my_command\n   guaka new myCommand".f.red)
     } catch {
       XCTFail()
     }

@@ -72,7 +72,7 @@ build-linux-docker:
 	docker-compose run -w /work swift
 	@echo "\nLinux version built at bin/linux/guaka\n"
 
-build-all-local: clean build-linux-docker build-project-darwin
+build-all-local: clone-swiftline clean build-linux-docker build-project-darwin
 	@echo "Binaries built at bin/\n"
 
 release-local:
@@ -93,6 +93,15 @@ release-publish-local:
 	make release-local
 	make publish-local
 
+clone-swiftline:
+	@echo "Removing old Swiftline"
+	@echo ""
+	rm -rf SwiftLineTemp
+
+	@echo "Clone new Swiftline from oarrabi/linux! branch"
+	git clone -b oarrabi/linux! https://github.com/oarrabi/Swiftline.git SwiftLineTemp
+	mv SwiftLineTemp/Sources/*.* Sources/Swiftline/
+	rm -rf SwiftLineTemp
 
 release-and-deploy:
 	if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make build-project-darwin release-darwin VERSION=${TRAVIS_TAG} GITHUB_TOKEN=${GITHUB_TOKEN} ; fi

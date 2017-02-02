@@ -76,7 +76,7 @@ private func printAddSuccess(setupFile: String, commandFile: String) {
     "  \(setupFile)",
     "",
     "Next steps:",
-    "  - build the project `swift build`",
+    "  - build the project `swift build`, the binary built will be placed under `.build/[debug|release]/...`",
     "  - test the command added"
   ]
 
