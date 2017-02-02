@@ -53,7 +53,7 @@ private func execute(flags: Flags, args: [String]) {
 
     try FileOperations.newProjectOperations(paths: paths).perform()
 
-    printNewSuccess(path: paths.rootDirectory, projectName: name ?? "")
+    printNewSuccess(path: paths.rootDirectory, projectName: paths.projectName)
   } catch let error as GuakaError {
     print(error.error)
     print("\nCheck the help for more info:")
@@ -73,8 +73,8 @@ private func printNewSuccess(path: String, projectName: String) {
     "  - Change into the created project",
     "    cd \(path)".s.italic,
     "",
-    "  - Build the project `swift build`",
-    "    The binary built will be placed under `.build/[debug|release]/\(projectName)`",
+    "  - Build the project with `\("swift build".s.italic)`",
+    "    The binary built will be placed under `\(".build/[debug|release]/\(projectName)".s.underline)`",
     "",
     "    You can run it with:",
     "    .build/debug/\(projectName) -- help".s.italic,

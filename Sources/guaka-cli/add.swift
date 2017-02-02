@@ -59,7 +59,12 @@ private func execute(flags: Flags, args: [String]) {
     try FileOperations.addCommandOperations(paths: paths, commandName: name, parent: parent)
       .perform()
 
-    printAddSuccess(setupFile: paths.setupSwiftFile, commandFile: paths.path(forSwiftFile: name))
+    printAddSuccess(
+      setupFile: paths.setupSwiftFile,
+      commandFile: paths.path(forSwiftFile: name),
+      projectName: paths.projectName,
+      commandName: name
+    )
 
   } catch let error as GuakaError {
     addCommand.fail(statusCode: 1, errorMessage: error.error)
@@ -68,17 +73,21 @@ private func execute(flags: Flags, args: [String]) {
   }
 }
 
-private func printAddSuccess(setupFile: String, commandFile: String) {
+private func printAddSuccess(setupFile: String, commandFile: String, projectName: String, commandName: String) {
   let message = [
     "A new Command has been created at:",
-    "  \(commandFile)",
-    "Setup file has been altered at:",
-    "  \(setupFile)",
+    "  \(commandFile)".f.green,
+    "",
+    "Setup file has been updated at:",
+    "  \(setupFile)".f.green,
     "",
     "Next steps:",
-    "  - build the project `swift build`, the binary built will be placed under `.build/[debug|release]/...`",
-    "  - test the command added"
-  ]
+    "  - Build the project with `\("swift build".s.italic)`",
+    "    The binary built will be placed under `\(".build/[debug|release]/\(projectName)".s.underline)`",
+    "",
+    "  - Test the command added, you can run it with:",
+    "    .build/debug/\(projectName) \(commandName)".s.italic,
+    ]
 
   print(message.joined(separator: "\n"))
 }
