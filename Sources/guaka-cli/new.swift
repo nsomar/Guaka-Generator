@@ -59,7 +59,9 @@ private func execute(flags: Flags, args: [String]) {
     print("\nCheck the help for more info:")
     newCommand.fail(statusCode: 1)
   } catch {
-    newCommand.fail(statusCode: 1, errorMessage: "General error occured".f.red)
+    print("General error occured".f.red)
+    print("\nCheck the help for more info:")
+    newCommand.fail(statusCode: 1)
   }
 
 }
@@ -77,7 +79,7 @@ private func printNewSuccess(path: String, projectName: String) {
     "    The binary built will be placed under `\(".build/[debug|release]/\(projectName)".s.underline)`",
     "",
     "    You can run it with:",
-    "    .build/debug/\(projectName) -- help".s.italic,
+    "    .build/debug/\(projectName) --help".s.italic,
     "",
     "  - Add a sub commands to your project root command using:",
     "    guaka add [command name]".s.italic

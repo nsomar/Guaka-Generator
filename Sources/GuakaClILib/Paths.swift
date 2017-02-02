@@ -51,5 +51,9 @@ public struct Paths {
 
     return false
   }
+
+  public func isNewCommand(commandName: String) -> Bool {
+    return GuakaCliConfig.file.exists(atPath: path(forSwiftFile: commandName)) == false
+  }
   
 }

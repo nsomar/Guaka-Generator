@@ -74,7 +74,12 @@ class GeneratorPartsTests: XCTestCase {
     do {
       _ = try GeneratorParts.commandName(forPassedArgs: [])
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "`guaka add` requires a command that was not given.\nCall `guaka add CommandName` to create a new command.\n".f.red)
+      XCTAssertEqual(e.error, [
+        "`guaka add` requires a command that was not given.".f.red,
+        "",
+        "Call `guaka add CommandName` to create a new command.",
+        ""
+        ].joined(separator: "\n"))
     } catch {
       XCTFail()
     }
@@ -94,7 +99,7 @@ class GeneratorPartsTests: XCTestCase {
     do {
       _ = try GeneratorParts.commandName(forPassedArgs: ["abc def"])
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "The command name passed `abc def` is incorrect.\nPlease use only letters, numbers, underscodes and dashes.\n\nValid examples:\n   guaka new test\n   guaka new MyCommand\n   guaka new my-command\n   guaka new my_command\n   guaka new myCommand".f.red)
+      XCTAssertEqual(e.error, "The command name passed `abc def` is incorrect.".f.red + "\nPlease use only letters, numbers, underscodes and dashes.\n\nValid examples:\n   guaka new test\n   guaka new MyCommand\n   guaka new my-command\n   guaka new my_command\n   guaka new myCommand")
     } catch {
       XCTFail()
     }

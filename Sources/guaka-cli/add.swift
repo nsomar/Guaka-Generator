@@ -55,6 +55,10 @@ private func execute(flags: Flags, args: [String]) {
       throw GuakaError.notAGuakaProject
     }
 
+    guard paths.isNewCommand(commandName: name) else {
+      throw GuakaError.commandAlreadyExist(name, paths.path(forSwiftFile: name))
+    }
+
     let parent = flags.get(name: "parent", type: String.self)
     try FileOperations.addCommandOperations(paths: paths, commandName: name, parent: parent)
       .perform()
@@ -67,18 +71,22 @@ private func execute(flags: Flags, args: [String]) {
     )
 
   } catch let error as GuakaError {
-    addCommand.fail(statusCode: 1, errorMessage: error.error)
+    print(error.error)
+    print("\nCheck the help for more info:")
+    addCommand.fail(statusCode: 1)
   } catch {
-    addCommand.fail(statusCode: 1, errorMessage: "General error occured")
+    print("General error occured".f.red)
+    print("\nCheck the help for more info:")
+    addCommand.fail(statusCode: 1)
   }
 }
 
 private func printAddSuccess(setupFile: String, commandFile: String, projectName: String, commandName: String) {
   let message = [
-    "A new Command has been created at:",
+    "A new swift file with the Command has been created at:",
     "  \(commandFile)".f.green,
     "",
-    "Setup file has been updated at:",
+    "Setup swift file has been updated at:",
     "  \(setupFile)".f.green,
     "",
     "Next steps:",

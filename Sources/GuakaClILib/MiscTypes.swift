@@ -22,6 +22,7 @@ public enum GuakaError: Error {
   case cannotReadFile(String)
   case setupFileAltered
   case notAGuakaProject
+  case commandAlreadyExist(String, String)
   case missingCommandName
   case tooManyArgsPassed
   case wrongCommandNameFormat(String)
@@ -55,13 +56,19 @@ public enum GuakaError: Error {
 
     case .missingCommandName:
       return [
-        "`guaka add` requires a command that was not given.",
+        "`guaka add` requires a command that was not given.".f.red,
+        "",
         "Call `guaka add CommandName` to create a new command.",
         ""
-        ].joined(separator: "\n").f.red
+        ].joined(separator: "\n")
 
+    case .commandAlreadyExist(let name, let path):
+      return [ "The command name passed `\(name)` already exist:".f.red,
+               "  \(path)".f.red,
+               "Please use a differnt command name"].joined(separator: "\n")
+      
     case .wrongCommandNameFormat(let name):
-      return [ "The command name passed `\(name)` is incorrect.",
+      return [ "The command name passed `\(name)` is incorrect.".f.red,
         "Please use only letters, numbers, underscodes and dashes.",
         "",
         "Valid examples:",
@@ -69,7 +76,7 @@ public enum GuakaError: Error {
         "   guaka new MyCommand",
         "   guaka new my-command",
         "   guaka new my_command",
-        "   guaka new myCommand"].joined(separator: "\n").f.red
+        "   guaka new myCommand"].joined(separator: "\n")
 
     case .tooManyArgsPassed:
       return "Too many arguments passed to command.".f.red
