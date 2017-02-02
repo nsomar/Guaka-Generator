@@ -4,7 +4,8 @@ let package = Package(
     name: "guaka-cli",
     targets: [
       Target(name: "guaka-cli", dependencies: ["GuakaClILib"]),
-      Target(name: "GuakaClILib"),
+      Target(name: "Swiftline"),
+      Target(name: "GuakaClILib", dependencies: ["Swiftline"]),
     ],
     dependencies: [
         .Package(url: "https://github.com/oarrabi/Guaka.git", majorVersion: 0),
