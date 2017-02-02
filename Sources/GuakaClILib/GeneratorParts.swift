@@ -29,7 +29,8 @@ public enum GeneratorParts {
       generatedComment,
       "func setupCommands() {",
       comamndAddingPlaceholder,
-      "}"
+      "}",
+      ""
       ].joined(separator: "\n")
   }
 
@@ -41,6 +42,7 @@ public enum GeneratorParts {
       "setupCommands()",
       "",
       "rootCommand.execute()",
+      ""
       ].joined(separator: "\n")
   }
 
@@ -66,6 +68,7 @@ public enum GeneratorParts {
       "  // Execute code here",
       "  print(\"\(commandName) called\")",
       "}",
+      ""
       ].joined(separator: "\n")
   }
 
@@ -77,7 +80,8 @@ public enum GeneratorParts {
       "  dependencies: [",
       "    .Package(url: \"\(guakaURL)\", majorVersion: \(guakaVersion)),",
       "    ]",
-      ")"
+      ")",
+      ""
       ].joined(separator: "\n")
   }
 
