@@ -48,7 +48,7 @@ class GeneratorPartsTests: XCTestCase {
     do {
       _ = try GeneratorParts.updateSetupFile(withContent: "abcd", byAddingCommand: "new", withParent: "root")
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "Guaka setup.swift file has been altered.\nThe placeholder used to insert commands cannot be found   // Command adding placeholder, edit this line.\nYou can try to add it yourself by updating `setup.swift` to look like\n\nimport Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  // Command adding placeholder, edit this line\n}\n\n\nAdding command wont be possible.".f.red)
+      XCTAssertEqual(e.error, "Guaka setup.swift file has been altered.\nThe placeholder used to insert commands cannot be found   // Command adding placeholder, edit this line.\nYou can try to add it yourself by updating `setup.swift` to look like\n\nimport Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  // Command adding placeholder, edit this line\n}\n\n\nAdding command won't be possible.".f.red)
     } catch {
       XCTFail()
     }
@@ -75,7 +75,7 @@ class GeneratorPartsTests: XCTestCase {
       _ = try GeneratorParts.commandName(forPassedArgs: [])
     } catch let e as GuakaError {
       XCTAssertEqual(e.error, [
-        "`guaka add` requires a command that was not given.".f.red,
+        "Missing CommandName for `guaka add`.".f.red,
         "",
         "Call `guaka add CommandName` to create a new command.",
         ""

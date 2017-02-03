@@ -33,7 +33,7 @@ public enum GuakaError: Error {
       return [
         "Wrong path given:",
         "  \(path)",
-        "The path cannot be used as its not empty"
+        "The path must be an empty directory"
         ].joined(separator: "\n").f.red
 
     case .triedToCreateProjectInNonEmptyDirectory(let path):
@@ -49,24 +49,24 @@ public enum GuakaError: Error {
       return "Cannot read contents of file \(path)".f.red
 
     case .setupFileAltered:
-      return "Guaka setup.swift file has been altered.\nThe placeholder used to insert commands cannot be found \(GeneratorParts.comamndAddingPlaceholder).\nYou can try to add it yourself by updating `setup.swift` to look like\n\n\(GeneratorParts.setupFileContent())\n\nAdding command wont be possible.".f.red
+      return "Guaka setup.swift file has been altered.\nThe placeholder used to insert commands cannot be found \(GeneratorParts.comamndAddingPlaceholder).\nYou can try to add it yourself by updating `setup.swift` to look like\n\n\(GeneratorParts.setupFileContent())\n\nAdding command won't be possible.".f.red
 
     case .notAGuakaProject:
-      return "This command can only be executed in a Guaka project.\nThe following directory does not contain guaka files".f.red
+      return "This command can only be executed inside a Guaka project.".f.red
 
     case .missingCommandName:
       return [
-        "`guaka add` requires a command that was not given.".f.red,
+        "Missing CommandName for `guaka add`.".f.red,
         "",
         "Call `guaka add CommandName` to create a new command.",
         ""
         ].joined(separator: "\n")
 
     case .commandAlreadyExist(let name, let path):
-      return [ "The command name passed `\(name)` already exist:".f.red,
+      return [ "The command `\(name)` already exist:".f.red,
                "  \(path)".f.red,
                "Please use a differnt command name"].joined(separator: "\n")
-      
+
     case .wrongCommandNameFormat(let name):
       return [ "The command name passed `\(name)` is incorrect.".f.red,
         "Please use only letters, numbers, underscodes and dashes.",
