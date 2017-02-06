@@ -55,30 +55,47 @@ private func execute(flags: Flags, args: [String]) {
       throw GuakaError.notAGuakaProject
     }
 
+    guard paths.isNewCommand(commandName: name) else {
+      throw GuakaError.commandAlreadyExist(name, paths.path(forSwiftFile: name))
+    }
+
     let parent = flags.get(name: "parent", type: String.self)
     try FileOperations.addCommandOperations(paths: paths, commandName: name, parent: parent)
       .perform()
 
-    printAddSuccess(setupFile: paths.setupSwiftFile, commandFile: paths.path(forSwiftFile: name))
+    printAddSuccess(
+      setupFile: paths.setupSwiftFile,
+      commandFile: paths.path(forSwiftFile: name),
+      projectName: paths.projectName,
+      commandName: name
+    )
 
   } catch let error as GuakaError {
-    addCommand.fail(statusCode: 1, errorMessage: error.error)
+    print(error.error)
+    print("\nCheck the help for more info:")
+    addCommand.fail(statusCode: 1)
   } catch {
-    addCommand.fail(statusCode: 1, errorMessage: "General error occured")
+    print("General error occured".f.red)
+    print("\nCheck the help for more info:")
+    addCommand.fail(statusCode: 1)
   }
 }
 
-private func printAddSuccess(setupFile: String, commandFile: String) {
+private func printAddSuccess(setupFile: String, commandFile: String, projectName: String, commandName: String) {
   let message = [
-    "A new Command has been created at:",
-    "  \(commandFile)",
-    "Setup file has been altered at:",
-    "  \(setupFile)",
+    "A new swift file with the Command has been created at:",
+    "  \(commandFile)".f.green,
+    "",
+    "Setup swift file has been updated at:",
+    "  \(setupFile)".f.green,
     "",
     "Next steps:",
-    "  - build the project `swift build`",
-    "  - test the command added"
-  ]
+    "  - Build the project with `\("swift build".s.italic)`",
+    "    The binary built will be placed under `\(".build/[debug|release]/\(projectName)".s.underline)`",
+    "",
+    "  - Test the command added, you can run it with:",
+    "    .build/debug/\(projectName) \(commandName)".s.italic,
+    ]
 
   print(message.joined(separator: "\n"))
 }

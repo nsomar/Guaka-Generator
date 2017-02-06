@@ -9,6 +9,7 @@
 import Guaka
 import FileUtils
 import GuakaClILib
+import Swiftline
 
 var newCommand = Command(
   usage: "new [name or path]", configuration: configuration, run: execute)
@@ -52,24 +53,36 @@ private func execute(flags: Flags, args: [String]) {
 
     try FileOperations.newProjectOperations(paths: paths).perform()
 
-    printNewSuccess(path: paths.rootDirectory)
+    printNewSuccess(path: paths.rootDirectory, projectName: paths.projectName)
   } catch let error as GuakaError {
-    newCommand.fail(statusCode: 1, errorMessage: error.error)
+    print(error.error)
+    print("\nCheck the help for more info:")
+    newCommand.fail(statusCode: 1)
   } catch {
-    newCommand.fail(statusCode: 1, errorMessage: "General error occured")
+    print("General error occured".f.red)
+    print("\nCheck the help for more info:")
+    newCommand.fail(statusCode: 1)
   }
 
 }
 
-private func printNewSuccess(path: String) {
+private func printNewSuccess(path: String, projectName: String) {
   let message = [
     "A new Guaka project was created at:",
-    "  \(path)",
+    "  \(path)".f.green,
     "",
     "Next steps:",
-    "  - cd into the created project",
-    "  - build the project `swift build`",
-    "  - add sub commands with `guaka add [command name]"
+    "  - Change into the created project",
+    "    cd \(path)".s.italic,
+    "",
+    "  - Build the project with `\("swift build".s.italic)`",
+    "    The binary built will be placed under `\(".build/[debug|release]/\(projectName)".s.underline)`",
+    "",
+    "    You can run it with:",
+    "    .build/debug/\(projectName) --help".s.italic,
+    "",
+    "  - Add a sub commands to your project root command using:",
+    "    guaka add [command name]".s.italic
   ]
 
   print(message.joined(separator: "\n"))

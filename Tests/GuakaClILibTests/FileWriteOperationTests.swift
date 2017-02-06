@@ -80,7 +80,7 @@ class FileWriteOperationTests: XCTestCase {
     do {
       try op.perform()
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "Cannot generate main swift file")
+      XCTAssertEqual(e.error, "Cannot generate main swift file".f.red)
     } catch {
       XCTFail()
     }
@@ -119,7 +119,7 @@ class FileWriteOperationTests: XCTestCase {
     do {
       try ops.perform()
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "Cannot generate root swift file")
+      XCTAssertEqual(e.error, "Cannot generate root swift file".f.red)
     } catch {
       XCTFail()
     }
@@ -159,7 +159,7 @@ class FileWriteOperationTests: XCTestCase {
     do {
       try op.perform()
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "Cannot read contents of file some/path")
+      XCTAssertEqual(e.error, "Cannot read contents of file some/path".f.red)
     } catch {
       XCTFail()
     }
@@ -178,7 +178,7 @@ class FileWriteOperationTests: XCTestCase {
     do {
       try op.perform()
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "Cannot generate some error file")
+      XCTAssertEqual(e.error, "Cannot generate some error file".f.red)
     } catch {
       XCTFail()
     }

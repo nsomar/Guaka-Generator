@@ -14,41 +14,41 @@ class GeneratorPartsTests: XCTestCase {
 
   func testGeneratesCommandFile() {
     let file = GeneratorParts.commandFile(forVarName: "test", commandName: "testit")
-    XCTAssertEqual(file, "import Guaka\n\nvar testCommand = Command(\n  usage: \"testit\", configuration: configuration, run: execute)\n\n\nprivate func configuration(command: Command) {\n\n  command.add(flags: [\n    // Add your flags here\n    ]\n  )\n\n  // Other configurations\n}\n\nprivate func execute(flags: Flags, args: [String]) {\n  // Execute code here\n  print(\"testit called\")\n}")
+    XCTAssertEqual(file, "import Guaka\n\nvar testCommand = Command(\n  usage: \"testit\", configuration: configuration, run: execute)\n\n\nprivate func configuration(command: Command) {\n\n  command.add(flags: [\n    // Add your flags here\n    ]\n  )\n\n  // Other configurations\n}\n\nprivate func execute(flags: Flags, args: [String]) {\n  // Execute code here\n  print(\"testit called\")\n}\n")
   }
 
   func testGeneratesPackageFile() {
     let file = GeneratorParts.packageFile(forCommandName: "test")
-    XCTAssertEqual(file, "import PackageDescription\nlet package = Package(\n  name: \"test\",\n  dependencies: [\n    .Package(url: \"https://github.com/oarrabi/Guaka.git\", majorVersion: 0),\n    ]\n)")
+    XCTAssertEqual(file, "import PackageDescription\nlet package = Package(\n  name: \"test\",\n  dependencies: [\n    .Package(url: \"https://github.com/oarrabi/Guaka.git\", majorVersion: 0),\n    ]\n)\n")
   }
 
   func testGeneratesMainFile() {
     let file = GeneratorParts.mainSwiftFileContent()
-    XCTAssertEqual(file, "import Guaka\n\nsetupCommands()\n\nrootCommand.execute()")
+    XCTAssertEqual(file, "import Guaka\n\nsetupCommands()\n\nrootCommand.execute()\n")
   }
 
   func testGeneratesSetupFile() {
     let file = GeneratorParts.setupFileContent()
-    XCTAssertEqual(file, "import Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  // Command adding placeholder, edit this line\n}")
+    XCTAssertEqual(file, "import Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  // Command adding placeholder, edit this line\n}\n")
   }
 
   func testUpdatesSetupWihtoutParentFile() {
     let file = GeneratorParts.setupFileContent()
     let updated = try! GeneratorParts.updateSetupFile(withContent: file, byAddingCommand: "new", withParent: nil)
-    XCTAssertEqual(updated, "import Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  rootCommand.add(subCommand: new)\n  // Command adding placeholder, edit this line\n}")
+    XCTAssertEqual(updated, "import Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  rootCommand.add(subCommand: new)\n  // Command adding placeholder, edit this line\n}\n")
   }
 
   func testUpdatesSetupWihtParentFile() {
     let file = GeneratorParts.setupFileContent()
     let updated = try! GeneratorParts.updateSetupFile(withContent: file, byAddingCommand: "new", withParent: "root")
-    XCTAssertEqual(updated, "import Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  rootCommand.add(subCommand: new)\n  // Command adding placeholder, edit this line\n}")
+    XCTAssertEqual(updated, "import Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  rootCommand.add(subCommand: new)\n  // Command adding placeholder, edit this line\n}\n")
   }
 
   func testItThrowsErrorIfCannotFindThePlaceholder() {
     do {
       _ = try GeneratorParts.updateSetupFile(withContent: "abcd", byAddingCommand: "new", withParent: "root")
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "Guaka setup.swift file has been altered.\nThe placeholder used to insert commands cannot be found   // Command adding placeholder, edit this line.\nYou can try to add it yourself by updating `setup.swift` to look like\n\nimport Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  // Command adding placeholder, edit this line\n}\n\nAdding command wont be possible.")
+      XCTAssertEqual(e.error, "Guaka setup.swift file has been altered.\nThe placeholder used to insert commands cannot be found   // Command adding placeholder, edit this line.\nYou can try to add it yourself by updating `setup.swift` to look like\n\nimport Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  // Command adding placeholder, edit this line\n}\n\n\nAdding command won't be possible.".f.red)
     } catch {
       XCTFail()
     }
@@ -62,7 +62,7 @@ class GeneratorPartsTests: XCTestCase {
 
     updated = try! GeneratorParts.updateSetupFile(withContent: updated, byAddingCommand: "new3")
 
-    XCTAssertEqual(updated, "import Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  rootCommand.add(subCommand: new1)\n  rootCommand.add(subCommand: new2)\n  rootCommand.add(subCommand: new3)\n  // Command adding placeholder, edit this line\n}")
+    XCTAssertEqual(updated, "import Guaka\n\n// Generated, dont update\nfunc setupCommands() {\n  rootCommand.add(subCommand: new1)\n  rootCommand.add(subCommand: new2)\n  rootCommand.add(subCommand: new3)\n  // Command adding placeholder, edit this line\n}\n")
   }
 
   func testItGetsNameIfCorrect() {
@@ -74,7 +74,12 @@ class GeneratorPartsTests: XCTestCase {
     do {
       _ = try GeneratorParts.commandName(forPassedArgs: [])
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "`guaka add` requires a command that was not given.\nCall `guaka add CommandName` to create a new command.\n")
+      XCTAssertEqual(e.error, [
+        "Missing CommandName for `guaka add`.".f.red,
+        "",
+        "Call `guaka add CommandName` to create a new command.",
+        ""
+        ].joined(separator: "\n"))
     } catch {
       XCTFail()
     }
@@ -84,7 +89,7 @@ class GeneratorPartsTests: XCTestCase {
     do {
       _ = try GeneratorParts.commandName(forPassedArgs: ["a", "b"])
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "Too many arguments passed to command.")
+      XCTAssertEqual(e.error, "Too many arguments passed to command.".f.red)
     } catch {
       XCTFail()
     }
@@ -94,7 +99,7 @@ class GeneratorPartsTests: XCTestCase {
     do {
       _ = try GeneratorParts.commandName(forPassedArgs: ["abc def"])
     } catch let e as GuakaError {
-      XCTAssertEqual(e.error, "The command name passed `abc def` is incorrect.\nPlease use only letters, numbers, underscodes and dashes.\n\nValid examples:\n   guaka new test\n   guaka new MyCommand\n   guaka new my-command\n   guaka new my_command\n   guaka new myCommand")
+      XCTAssertEqual(e.error, "The command name passed `abc def` is incorrect.".f.red + "\nPlease use only letters, numbers, underscodes and dashes.\n\nValid examples:\n   guaka new test\n   guaka new MyCommand\n   guaka new my-command\n   guaka new my_command\n   guaka new myCommand")
     } catch {
       XCTFail()
     }
